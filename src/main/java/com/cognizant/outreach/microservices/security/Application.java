@@ -1,4 +1,4 @@
-package com.cognizant.outreach.microservices.security.application;
+package com.cognizant.outreach.microservices.security;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,3 +1,17 @@
+/**
+ * ${SecurityController}
+ *
+ *  2019 Cognizant Technology Solutions. All Rights Reserved.
+ *
+ *  This software is the confidential and proprietary information of Cognizant Technology
+ *  Solutions("Confidential Information").  You shall not disclose or use Confidential
+ *  Information without the express written agreement of Cognizant Technology Solutions.
+ *  Modification Log:
+ *  -----------------
+ *  Date                   Author           Description
+ *  18/Feb/2019            371793        Developed base code structure
+ *  ---------------------------------------------------------------------------
+ */
 package com.cognizant.outreach.microservices.security.controller;
 
 import java.util.Optional;
@@ -16,6 +30,11 @@ import com.cognizant.outreach.microservices.security.model.User;
 import com.cognizant.outreach.microservices.security.service.SecurityService;
 
 
+/**
+ * Provides method to authorize and authenticate user along with API token validation 
+ * 
+ * @author 371793
+ */
 @RestController
 public class SecurityController {
 
@@ -24,25 +43,41 @@ public class SecurityController {
 	@Autowired
 	SecurityService securityService;
 	
+	/**
+	 * To validate the provided api token is valid or not
+	 * 
+	 * @param apiToken
+	 * @param userId
+	 * @return  HttpStatus.ACCEPTED if valid and HttpStatus.UNAUTHORIZED for not a valid token
+	 */
 	@RequestMapping(method=RequestMethod.POST,path="/security/validatetoken")
 	public ResponseEntity<String> validateAPIToken(@RequestParam(value = "apitoken", required = true) String apiToken,
 			@RequestParam(value = "userid", required = true) String userId) {
 		if(!securityService.isTokenValid(apiToken)) {
+			logger.debug("Token invalid for user {}", userId);
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("API Token is not valid or expired");
 		}
-		logger.info("Gateway hit with user {} and token {}", userId,apiToken);
+		logger.debug("Token validated for user {}", userId);
 		return ResponseEntity.accepted().body("API Token is valid");
 	}
 	
+	/**
+	 * To authenticate user and provide authorization information like role and menus to access
+	 * 
+	 * @param password
+	 * @param userId
+	 * @return HttpStatus.UNAUTHORIZED for not authorized user and valid user if authorized
+	 */
 	@RequestMapping(method=RequestMethod.POST,path="/security/login")
-	public ResponseEntity<User> anthenticateUser(@RequestParam(value = "userId", required = true) String password,
+	public ResponseEntity<User> userLogin(@RequestParam(value = "userid", required = true) String password,
 			@RequestParam(value = "password", required = true) String userId) {
 		Optional<User> user = securityService.initializeUser(userId, password);
 
 		if(!user.isPresent()) {
+			logger.debug("User not authorized with the provided credentials ==> user {}", userId);
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
-		logger.info("Login with user {}", userId);
+		logger.debug("User authorized ==> user {}", userId);
 		return ResponseEntity.accepted().body(user.get());
 	}
 }

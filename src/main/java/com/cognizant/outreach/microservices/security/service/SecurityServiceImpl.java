@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import com.cognizant.outreach.entity.ApiToken;
 import com.cognizant.outreach.entity.RoleMenuMapping;
 import com.cognizant.outreach.entity.UserRoleMapping;
-import com.cognizant.outreach.microservices.security.application.ApplicationProperties;
+import com.cognizant.outreach.microservices.security.ApplicationProperties;
 import com.cognizant.outreach.microservices.security.dao.APITokenRepository;
 import com.cognizant.outreach.microservices.security.dao.UserRoleMappingRepository;
 import com.cognizant.outreach.microservices.security.model.User;
@@ -95,6 +95,10 @@ public class SecurityServiceImpl implements SecurityService{
 	
 	//TODO: yet to implement ldap or sso logic
 	private boolean authenticateUser(String userId, String password) {
+		/*Map<String, String> users = new HashMap<String, String>();
+		users.put("magesh", "magesh");
+		users.put("panneer", "panneer");
+		users.put("bharath", "bharath");*/
 		Map<String, String> users = applicationProperties.getUsers();
 		String security = users.get(userId);
 		if(security.equals(password)) {

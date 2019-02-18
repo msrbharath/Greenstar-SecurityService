@@ -1,4 +1,4 @@
-package com.cognizant.outreach.microservices.security.application;
+package com.cognizant.outreach.microservices.security;
 
 import java.util.Map;
 
@@ -9,10 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "appconfig")
 public class ApplicationProperties {
 
-	/**
-	 * Key: userId
-	 * Value: password
-	 */
 	private Map<String, String> users;
 	
 	private Integer apitimeout;

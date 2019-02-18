@@ -3,13 +3,16 @@ package com.cognizant.outreach.microservices.security.model;
 import java.util.List;
 
 public class User {
-	
+
 	private String roleName;
-	
+
 	private String apiToken;
-	
+
 	private List<String> uiMenuList;
 
+	/**
+	 * @return
+	 */
 	public String getRoleName() {
 		return roleName;
 	}
@@ -33,6 +36,5 @@ public class User {
 	public void setUiMenuList(List<String> uiMenuList) {
 		this.uiMenuList = uiMenuList;
 	}
-	
-	
+
 }

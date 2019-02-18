@@ -45,7 +45,7 @@ public class SecurityServiceImpl implements SecurityService{
 	@Override
 	public Boolean isTokenValid(String token) {
 		Optional<ApiToken> apiToken = apiTokenRepository.findById(token);
-		if(apiToken.isPresent() && new Date().getTime() > apiToken.get().getEndTime().getTime()) {
+		if(!apiToken.isPresent() || new Date().getTime() > apiToken.get().getEndTime().getTime()) {
 			return false;
 		}
 		return true;

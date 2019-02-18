@@ -22,22 +22,22 @@ public class SecurityController {
 	protected Logger logger = LoggerFactory.getLogger(SecurityController.class);
 	
 	@Autowired
-	SecurityService authService;
+	SecurityService securityService;
 	
-	@RequestMapping(method=RequestMethod.POST,path="/auth/validatetoken")
+	@RequestMapping(method=RequestMethod.POST,path="/security/validatetoken")
 	public ResponseEntity<String> validateAPIToken(@RequestParam(value = "apitoken", required = true) String apiToken,
 			@RequestParam(value = "userid", required = true) String userId) {
-		if(!authService.isTokenValid(apiToken)) {
+		if(!securityService.isTokenValid(apiToken)) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("API Token is not valid or expired");
 		}
 		logger.info("Gateway hit with user {} and token {}", userId,apiToken);
 		return ResponseEntity.accepted().body("API Token is valid");
 	}
 	
-	@RequestMapping(method=RequestMethod.POST,path="/auth/login")
+	@RequestMapping(method=RequestMethod.POST,path="/security/login")
 	public ResponseEntity<User> anthenticateUser(@RequestParam(value = "userId", required = true) String password,
 			@RequestParam(value = "password", required = true) String userId) {
-		Optional<User> user = authService.initializeUser(userId, password);
+		Optional<User> user = securityService.initializeUser(userId, password);
 
 		if(!user.isPresent()) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);

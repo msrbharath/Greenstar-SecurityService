@@ -9,6 +9,8 @@ public class User {
 	private String apiToken;
 
 	private List<String> uiMenuList;
+	
+	private String userId;
 
 	/**
 	 * @return
@@ -37,4 +39,11 @@ public class User {
 		this.uiMenuList = uiMenuList;
 	}
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 }

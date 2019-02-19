@@ -14,6 +14,7 @@
  */
 package com.cognizant.outreach.microservices.security.controller;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -21,9 +22,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cognizant.outreach.microservices.security.model.User;
@@ -46,31 +47,29 @@ public class SecurityController {
 	/**
 	 * To validate the provided api token is valid or not
 	 * 
-	 * @param apiToken
-	 * @param userId
+	 * @param user
 	 * @return  HttpStatus.ACCEPTED if valid and HttpStatus.UNAUTHORIZED for not a valid token
 	 */
 	@RequestMapping(method=RequestMethod.POST,path="/security/validatetoken")
-	public ResponseEntity<String> validateAPIToken(@RequestParam(value = "apitoken", required = true) String apiToken,
-			@RequestParam(value = "userid", required = true) String userId) {
-		if(!securityService.isTokenValid(apiToken)) {
-			logger.debug("Token invalid for user {}", userId);
+	public ResponseEntity<String> validateAPIToken(@RequestBody User user) {
+		if(!securityService.isTokenValid(user.getApiToken())) {
+			logger.debug("Token invalid for user {}", user.getUserId());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("API Token is not valid or expired");
 		}
-		logger.debug("Token validated for user {}", userId);
+		logger.debug("Token validated for user {}", user.getUserId());
 		return ResponseEntity.accepted().body("API Token is valid");
 	}
 	
 	/**
 	 * To authenticate user and provide authorization information like role and menus to access
 	 * 
-	 * @param password
-	 * @param userId
+	 * @param params
 	 * @return HttpStatus.UNAUTHORIZED for not authorized user and valid user if authorized
 	 */
 	@RequestMapping(method=RequestMethod.POST,path="/security/login")
-	public ResponseEntity<User> userLogin(@RequestParam(value = "userid", required = true) String password,
-			@RequestParam(value = "password", required = true) String userId) {
+	public ResponseEntity<User> userLogin(@RequestBody Map<String, String> params) {
+		String userId = params.get("userid");
+		String password = params.get("password");
 		Optional<User> user = securityService.initializeUser(userId, password);
 
 		if(!user.isPresent()) {

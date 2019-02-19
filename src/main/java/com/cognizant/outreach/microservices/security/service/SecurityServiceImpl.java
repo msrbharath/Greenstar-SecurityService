@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,7 @@ public class SecurityServiceImpl implements SecurityService{
 	public Optional<User> initializeUser(String userId, String password) {
 		userId = userId.toLowerCase();
 		if(!authenticateUser(userId,password)) {
-			return null;
+			return Optional.ofNullable(null);
 		}
 		
 		User user = new User();
@@ -95,13 +96,9 @@ public class SecurityServiceImpl implements SecurityService{
 	
 	//TODO: yet to implement ldap or sso logic
 	private boolean authenticateUser(String userId, String password) {
-		/*Map<String, String> users = new HashMap<String, String>();
-		users.put("magesh", "magesh");
-		users.put("panneer", "panneer");
-		users.put("bharath", "bharath");*/
 		Map<String, String> users = applicationProperties.getUsers();
 		String security = users.get(userId);
-		if(security.equals(password)) {
+		if(!StringUtils.isEmpty(security) && security.equals(password)) {
 			return true;
 		}
 		return false;

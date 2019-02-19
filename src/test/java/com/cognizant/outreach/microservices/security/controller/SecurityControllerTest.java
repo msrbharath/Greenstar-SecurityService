@@ -72,7 +72,7 @@ public class SecurityControllerTest {
 	@Test
 	public void testInvalidToken() throws Exception {
 		HttpEntity<Object> userJson = getHttpEntity(
-				"{\"apitoken\": \"12343553411\", \"userid\": \"magesh\" }");
+				"{\"apiToken\": \"12343553411\", \"userId\": \"magesh\"}");
 
 		ResponseEntity<String> response = template.postForEntity("/security/validatetoken", userJson, String.class);
 
@@ -87,7 +87,7 @@ public class SecurityControllerTest {
 	@Test
 	public void testInvalidUserIdPassword() throws Exception {
 		HttpEntity<Object> userJson = getHttpEntity(
-				"{\"apitoken\": \"magesh12\", \"userid\": \"magesh\" }");
+				"{\"userid\": \"magesh12\", \"password\": \"magesh\" }");
 
 		ResponseEntity<User> response = template.postForEntity("/security/login", userJson, User.class);
 

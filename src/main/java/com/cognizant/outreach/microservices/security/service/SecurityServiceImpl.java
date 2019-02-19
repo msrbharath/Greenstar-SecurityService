@@ -23,10 +23,6 @@ import com.cognizant.outreach.microservices.security.dao.APITokenRepository;
 import com.cognizant.outreach.microservices.security.dao.UserRoleMappingRepository;
 import com.cognizant.outreach.microservices.security.model.User;
 
-/**
- * @author crossover
- *
- */
 @Service
 public class SecurityServiceImpl implements SecurityService{
 

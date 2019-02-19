@@ -48,7 +48,7 @@ public class SecurityControllerTest {
 	MockMvc mockMvc;
 	
 	@Mock
-	private SecurityController securityServiceController;
+	private SecurityController securityController;
 
 	@Autowired
 	private TestRestTemplate template;
@@ -60,7 +60,7 @@ public class SecurityControllerTest {
 	 */
 	@Before
 	public void setup() throws Exception {
-		mockMvc = MockMvcBuilders.standaloneSetup(securityServiceController).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(securityController).build();
 	}
 
 	

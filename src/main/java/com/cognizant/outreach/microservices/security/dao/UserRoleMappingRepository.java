@@ -10,10 +10,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 import com.cognizant.outreach.entity.UserRoleMapping;
 
-/**
- * @author crossover
- *
- */
+
 @RestResource(exported = false)
 public interface UserRoleMappingRepository extends CrudRepository<UserRoleMapping, Integer> {
 	

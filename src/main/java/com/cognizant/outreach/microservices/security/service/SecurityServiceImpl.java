@@ -10,10 +10,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.cognizant.outreach.entity.ApiToken;
 import com.cognizant.outreach.entity.RoleMenuMapping;
@@ -61,12 +60,11 @@ public class SecurityServiceImpl implements SecurityService{
 		
 		User user = new User();
 		Optional<UserRoleMapping> userRoleMapping = userRoleMappingRepository.findByUserId(userId);
-		
-		
+				
 		if(userRoleMapping.isPresent()) {
 			user.setRoleName(userRoleMapping.get().getRoleDetail().getRoleName());
 			// Set authorized menus
-			List<RoleMenuMapping> roleMenuMappings =    userRoleMapping.get().getRoleDetail().getRoleMenuMappings();
+			List<RoleMenuMapping> roleMenuMappings = userRoleMapping.get().getRoleDetail().getRoleMenuMapping();
 			if(!CollectionUtils.isEmpty(roleMenuMappings)) {
 				List<String> menus = new ArrayList<>();
  				for (RoleMenuMapping roleMenuMapping : roleMenuMappings) {
@@ -106,7 +104,8 @@ public class SecurityServiceImpl implements SecurityService{
 		apiToken.setToken(token);
 		Date date = new Date();
 		apiToken.setStartTime(date);
-		apiToken.setEndTime(DateUtils.addMinutes(date, applicationProperties.getApitimeout()));
+		// apiToken.setEndTime(DateUtils.addMinutes(date, applicationProperties.getApitimeout()));
+		apiToken.setEndTime(date);
 		apiTokenRepository.save(apiToken);
 	}
 	

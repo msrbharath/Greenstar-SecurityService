@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,7 +37,6 @@ import com.cognizant.outreach.microservices.security.service.SecurityService;
  * @author 371793
  */
 @RestController
-@CrossOrigin
 public class SecurityController {
 
 	protected Logger logger = LoggerFactory.getLogger(SecurityController.class);
@@ -52,7 +50,7 @@ public class SecurityController {
 	 * @param user
 	 * @return  HttpStatus.ACCEPTED if valid and HttpStatus.UNAUTHORIZED for not a valid token
 	 */
-	@RequestMapping(method=RequestMethod.POST,path="/security/validatetoken")
+	@RequestMapping(method=RequestMethod.POST,path="/validatetoken")
 	public ResponseEntity<String> validateAPIToken(@RequestBody User user) {
 		if(!securityService.isTokenValid(user.getApiToken())) {
 			logger.debug("Token invalid for user {}", user.getUserId());
@@ -68,7 +66,7 @@ public class SecurityController {
 	 * @param params
 	 * @return HttpStatus.UNAUTHORIZED for not authorized user and valid user if authorized
 	 */
-	@RequestMapping(method=RequestMethod.POST,path="/security/login")
+	@RequestMapping(method=RequestMethod.POST,path="/login")
 	public ResponseEntity<User> userLogin(@RequestParam("userId") String userId, @RequestParam("password") String password) {
 		
 		Optional<User> user = securityService.initializeUser(userId, password);

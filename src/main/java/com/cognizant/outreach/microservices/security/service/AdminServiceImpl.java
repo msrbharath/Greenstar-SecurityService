@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +33,9 @@ import com.cognizant.outreach.microservices.security.vo.UserRoleMappingVO;
 @Service
 @Transactional
 public class AdminServiceImpl implements AdminService {
-
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(AdminServiceImpl.class);
+	
 	private static final String SUCCESS = "SUCCESS";
 	private static final String EXIST = "EXIST";
 
@@ -50,6 +54,8 @@ public class AdminServiceImpl implements AdminService {
 						(String) userRoleArray[2]));
 			}
 		}
+		
+		LOGGER.info("Total user role mappings {}", userRolesMappingsList.size());		
 		return userRolesMappingsList;
 	}
 
@@ -70,6 +76,7 @@ public class AdminServiceImpl implements AdminService {
 			userRoleMapping.setLastUpdatedDtm(currentDate);
 			
 			userRoleMappingRepository.save(userRoleMapping);
+			LOGGER.info("User Role Mapping Saved Successfully");
 			return SUCCESS;
 		}
 		return EXIST;
@@ -88,8 +95,10 @@ public class AdminServiceImpl implements AdminService {
 				
 				userRole.get().setLastUpdatedUserId(userRoleMappingVO.getLoggedUserId());
 				userRole.get().setLastUpdatedDtm(currentDate);
+				
 				userRoleMappingRepository.save(userRole.get());
 				
+				LOGGER.info("User Role Mapping Updated Successfully");
 				return SUCCESS;
 			} else {
 				return EXIST;
@@ -106,6 +115,7 @@ public class AdminServiceImpl implements AdminService {
 				userRoleObjById.get().setLastUpdatedDtm(currentDate);
 				userRoleMappingRepository.save(userRoleObjById.get());
 				
+				LOGGER.info("User Role Mapping Updated Successfully");
 				return SUCCESS;
 			}
 			
@@ -120,6 +130,8 @@ public class AdminServiceImpl implements AdminService {
 		if (userRole.isPresent()) {
 			userRoleMappingRepository.delete(userRole.get());
 		}
+		
+		LOGGER.info("User Role Mapping Deleted Successfully");
 		return SUCCESS;
 	}
 

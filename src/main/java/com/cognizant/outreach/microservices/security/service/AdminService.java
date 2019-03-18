@@ -14,6 +14,17 @@
  */
 package com.cognizant.outreach.microservices.security.service;
 
+import java.util.List;
+
+import com.cognizant.outreach.microservices.security.vo.UserRoleMappingVO;
+
 public interface AdminService {
 
+	public List<UserRoleMappingVO> listOfUserRolesMappings();
+
+	public String saveUserRolesMappings(UserRoleMappingVO userRoleMappingVO);
+
+	public String updateUserRolesMappings(UserRoleMappingVO userRoleMappingVO);
+
+	public String deleteUserRolesMappings(UserRoleMappingVO userRoleMappingVO);
 }

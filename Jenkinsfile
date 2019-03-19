@@ -25,10 +25,10 @@ node {
         stage('Stop And Remove Container Exists') {
             /*To stop and remove if container exists or running. 
 			 Returning true to avoid failure if not exists or running */
-            bat label: 'Stop/Remove if exists', returnStatus: true, script: 'dockerx stop greenstarapp-security-service-docker && dockerx rm greenstarapp-security-service-docker'
+            bat label: 'Stop/Remove if exists', returnStatus: true, script: 'dockerx stop greenstarapp-security-service && dockerx rm greenstarapp-security-service'
         }
         stage('Docker Run') {
-            bat label: 'Docker Run status', script: 'dockerx run --name=greenstarapp-security-service-docker -d --publish=2610:2610 -e eureka.client.serviceUrl.defaultZone="http://172.18.2.50:8761/eureka/" -e spring.datasource.url="jdbc:mysql://greenstardb:3306/greenstar?useSSL=false" --link greenstardb:mysql greenstarapp-security-service:latest'
+            bat label: 'Docker Run status', script: 'dockerx run --name=greenstarapp-security-service -d --publish=2610:2610 -e eureka.client.serviceUrl.defaultZone="http://greenstarapp-discovery-service:8761/eureka/" -e spring.datasource.url="jdbc:mysql://greenstardb:3306/greenstar?useSSL=false" --link greenstardb:mysql --network=greenapp-network greenstarapp-security-service:latest'
         }
     }
 }

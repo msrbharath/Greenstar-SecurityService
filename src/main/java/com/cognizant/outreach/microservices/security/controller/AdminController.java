@@ -30,7 +30,6 @@ import com.cognizant.outreach.microservices.security.service.AdminService;
 import com.cognizant.outreach.microservices.security.vo.UserRoleMappingVO;
 
 @RestController
-@RequestMapping("/admin")
 public class AdminController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);

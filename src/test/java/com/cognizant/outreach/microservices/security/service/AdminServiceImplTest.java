@@ -54,6 +54,18 @@ public class AdminServiceImplTest {
 	}
 
 	@Test
+	public void TestSaveUserRoleMapping_NotExist() {
+
+		when(userRoleMappingRepository.findByUserId(Mockito.any(String.class))).thenReturn(getUserRoleMapping_empty());
+		when(userRoleMappingRepository.findRoleDetailsByRoleName(Mockito.any(String.class))).thenReturn(getRoleDetailOptional());
+		when(userRoleMappingRepository.save(Mockito.any(UserRoleMapping.class))).thenReturn(getNewUserRoleMapping());
+		
+		String resp = adminServiceImpl.saveUserRolesMappings(createUserRoleMappingVO());
+
+		assertTrue(resp == "SUCCESS");
+	}
+	
+	@Test
 	public void TestUpdateUserRoleMapping() {
 
 		when(userRoleMappingRepository.findById(Mockito.any(Long.class))).thenReturn(getUserRoleMapping());
@@ -66,6 +78,21 @@ public class AdminServiceImplTest {
 		assertTrue(resp == "SUCCESS");
 	}
 
+	
+	@Test
+	public void TestUpdateUserRoleMapping_Empty() {
+
+		when(userRoleMappingRepository.findById(Mockito.any(Long.class))).thenReturn(getUserRoleMapping());
+		when(userRoleMappingRepository.findByUserId(Mockito.any(String.class))).thenReturn(getUserRoleMapping_empty());
+		when(userRoleMappingRepository.findRoleDetailsByRoleName(Mockito.any(String.class))).thenReturn(getRoleDetailOptional());
+		when(userRoleMappingRepository.save(Mockito.any(UserRoleMapping.class))).thenReturn(getNewUserRoleMapping());
+		
+		String resp = adminServiceImpl.updateUserRolesMappings(updateUserRoleMappingVO());
+
+		assertTrue(resp == "SUCCESS");
+	}
+
+	
 	@Test
 	public void TestDeleteUserRoleMapping() {
 		
@@ -103,6 +130,11 @@ public class AdminServiceImplTest {
 		userRoleMapping.setLastUpdatedDtm(new Date());
 
 		return Optional.of(userRoleMapping);
+	}
+	
+	public Optional<UserRoleMapping> getUserRoleMapping_empty() {
+
+		return Optional.empty();
 	}
 	
 	public Optional<UserRoleMapping> getUserRoleMappingNotExist() {

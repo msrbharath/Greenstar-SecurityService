@@ -72,7 +72,7 @@ public class SecurityControllerTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void testValidToken() throws Exception {
+	public void testValidLoginAndToken() throws Exception {
 		
 		
 		HttpHeaders headers = new HttpHeaders();
@@ -95,37 +95,47 @@ public class SecurityControllerTest {
 		Assert.assertEquals(HttpStatus.ACCEPTED, response1.getStatusCode());
 	}
 	
+
+	
+	
 	/**
-	 * To check if the passed invalid user id and password
+	 * To check if the passed invalid token
 	 * 
 	 * @throws Exception
-	 *//*
+	 */
 	@Test
-	public void testValidLogin() throws Exception {
-		HttpEntity<Object> userJson = getHttpEntity(
-				"{\"userid\": \"magesh\", \"password\": \"magesh\" }");
+	public void testInValidToken() throws Exception {
 
-		ResponseEntity<User> response = template.postForEntity("/login", userJson, User.class);
+		User user = new User();
+		user.setApiToken("12334");
+		user.setUserId("magesh");
 
-		Assert.assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+		ResponseEntity<String> response1 = template.postForEntity("/validatetoken", user, String.class);
+
+		Assert.assertEquals(HttpStatus.UNAUTHORIZED, response1.getStatusCode());
 	}
 	
 	
-	*//**
-	 * To check if the passed invalid user id and password
+	/**
+	 * To check if the passed invalid login
 	 * 
 	 * @throws Exception
-	 *//*
+	 */
 	@Test
-	public void testInvalidUserIdPassword() throws Exception {
-		HttpEntity<Object> userJson = getHttpEntity(
-				"{\"userid\": \"magesh\", \"password\": \"magesh12\" }");
+	public void testInValidLogin() throws Exception {
 
-		ResponseEntity<User> response = template.postForEntity("/login", userJson, User.class);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+		MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+		map.add("userId", "magesh");
+		map.add("password", "magesh123");
+
+		HttpEntity<MultiValueMap<String, String>> requestParam = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+		ResponseEntity<User> response = template.postForEntity("/login", requestParam, User.class);
 
 		Assert.assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
 	}
-	*/
 	
 	private HttpEntity<Object> getHttpEntity(Object body) {
 		HttpHeaders headers = new HttpHeaders();

@@ -38,7 +38,7 @@ public class AdminServiceImplTest {
 
 		when(userRoleMappingRepository.listUserRolesMappings()).thenReturn(getUserRoleMappings());
 		List<UserRoleMappingVO> userRoleList = adminServiceImpl.listOfUserRolesMappings();
-		assertTrue(userRoleList.size() == 1);
+		assertTrue(userRoleList.size() >0 );
 	}
 
 	@Test
